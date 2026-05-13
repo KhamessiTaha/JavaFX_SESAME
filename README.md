@@ -6,39 +6,39 @@ A modern, professional JavaFX desktop application for managing car rental operat
 
 ###  Core Management Modules
 
-- ** Vehicle Management**
+- **Vehicle Management**
   - Add, update, and delete vehicle inventory
   - Track vehicle status (Available, Maintenance, Rented)
   - Manage vehicle specifications (brand, model, registration, fuel type, seats, price per day)
   - Filter and search vehicles by any field
 
-- ** Client Management**
+- **Client Management**
   - Complete client information management
   - Driver license tracking with expiration dates
   - Contact information management (email, phone, address)
   - Client reservation history view
   - Email and phone validation
 
-- ** Reservation Management**
+- **Reservation Management**
   - Create and manage reservations
   - Automatic price calculation based on rental duration
   - Overlapping reservation detection
   - Reservation status tracking (Pending, Confirmed, Cancelled, Completed)
   - Date-based availability checking
 
-- ** Payment Processing**
+- **Payment Processing**
   - Track payment for each reservation
   - Support multiple payment modes (Cash, Card, Check, Bank Transfer)
   - Automatic balance calculation
   - Payment status management (Paid, Partial, Unpaid)
 
-- ** Vehicle Returns**
+- **Vehicle Returns**
   - Record vehicle returns with condition assessment
   - Additional fees for damaged vehicles
   - Automatic vehicle status updates
   - Return history tracking
 
-- ** Analytics Dashboard**
+- **Analytics Dashboard**
   - Total reservations count
   - Total revenue tracking
   - Available vehicles overview
