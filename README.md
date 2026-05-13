@@ -32,7 +32,7 @@ A modern, professional JavaFX desktop application for managing car rental operat
   - Automatic balance calculation
   - Payment status management (Paid, Partial, Unpaid)
 
-- **↩ Vehicle Returns**
+- ** Vehicle Returns**
   - Record vehicle returns with condition assessment
   - Additional fees for damaged vehicles
   - Automatic vehicle status updates
