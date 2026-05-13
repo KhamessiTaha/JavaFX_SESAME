@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReservationsController" spacing="10" style="-fx-padding: 10">
+    <Label text="Reservation Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <ComboBox fx:id="clientCombo" prefWidth="150" promptText="Select Client"/>
+        <ComboBox fx:id="vehiculeCombo" prefWidth="150" promptText="Select Vehicle"/>
+        <DatePicker fx:id="dateDebut" promptText="Start Date"/>
+        <DatePicker fx:id="dateFin" promptText="End Date" onAction="#handleCalculateDays"/>
+        <ComboBox fx:id="statutCombo" prefWidth="100"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddReservation" style="-fx-padding: 5"/>
+        <Button text="Update" onAction="#handleUpdateReservation" style="-fx-padding: 5"/>
+        <Button text="Delete" onAction="#handleDeleteReservation" style="-fx-padding: 5"/>
+        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
+        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
+        <Label fx:id="prixTotalLabel" style="-fx-font-weight: bold"/>
+    </HBox>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+
+    <TableView fx:id="reservationTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="clientIdCol" text="Client ID" prefWidth="60"/>
+            <TableColumn fx:id="vehiculeIdCol" text="Vehicle ID" prefWidth="70"/>
+            <TableColumn fx:id="clientNomCol" text="Client" prefWidth="120"/>
+            <TableColumn fx:id="vehiculeNomCol" text="Vehicle" prefWidth="120"/>
+            <TableColumn fx:id="dateDebCol" text="Start Date" prefWidth="100"/>
+            <TableColumn fx:id="dateFinCol" text="End Date" prefWidth="100"/>
+            <TableColumn fx:id="joursCol" text="Days" prefWidth="50"/>
+            <TableColumn fx:id="prixCol" text="Total Price" prefWidth="80"/>
+            <TableColumn fx:id="statutCol" text="Status" prefWidth="80"/>
+        </columns>
+    </TableView>
+</VBox>
+

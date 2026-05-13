@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.DashboardController" fx:id="mainPane">
+    <top>
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Logout" onAction="#handleLogout"/>
+            </Menu>
+            <Menu text="Management">
+                <MenuItem text="Vehicles" onAction="#handleVehicles"/>
+                <MenuItem text="Clients" onAction="#handleClients"/>
+                <MenuItem text="Reservations" onAction="#handleReservations"/>
+            </Menu>
+            <Menu text="Operations">
+                <MenuItem text="Payments" onAction="#handlePayments"/>
+                <MenuItem text="Returns" onAction="#handleReturns"/>
+            </Menu>
+            <Menu text="Analytics">
+                <MenuItem text="Statistics" onAction="#handleStatistics"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <center>
+        <Label text="Select an option from the menu" style="-fx-font-size: 18"/>
+    </center>
+</BorderPane>
+

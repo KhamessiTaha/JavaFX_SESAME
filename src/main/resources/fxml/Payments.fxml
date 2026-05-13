@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.PaymentsController" spacing="10" style="-fx-padding: 10">
+    <Label text="Payment Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <ComboBox fx:id="reservationCombo" prefWidth="150" promptText="Select Reservation"/>
+        <TextField fx:id="montantTotalField" promptText="Montant Total" prefWidth="120" onKeyReleased="#handleCalculateReste"/>
+        <TextField fx:id="montantPayeField" promptText="Montant Payé" prefWidth="120" onKeyReleased="#handleCalculateReste"/>
+        <TextField fx:id="resteAPayerField" promptText="Reste à Payer" prefWidth="120" editable="false"/>
+        <ComboBox fx:id="modePaiementCombo" prefWidth="120" promptText="Mode Paiement"/>
+        <ComboBox fx:id="statutPaiementCombo" prefWidth="100" promptText="Statut Paiement"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddPaiement" style="-fx-padding: 5"/>
+        <Button text="Update" onAction="#handleUpdatePaiement" style="-fx-padding: 5"/>
+    </HBox>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+
+    <TableView fx:id="paiementTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="resIdCol" text="Reservation ID" prefWidth="90"/>
+            <TableColumn fx:id="montantTotalCol" text="Montant Total" prefWidth="100"/>
+            <TableColumn fx:id="montantPayeCol" text="Montant Payé" prefWidth="100"/>
+            <TableColumn fx:id="resteCol" text="Reste à Payer" prefWidth="100"/>
+            <TableColumn fx:id="modePaiementCol" text="Mode Paiement" prefWidth="100"/>
+            <TableColumn fx:id="statutCol" text="Statut" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>
+

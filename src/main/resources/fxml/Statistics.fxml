@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.StatisticsController" alignment="CENTER" spacing="30" style="-fx-padding: 30">
+    <Label text="Statistics Dashboard" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+
+    <GridPane hgap="30" vgap="30" alignment="CENTER">
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-border-color: #cccccc; -fx-padding: 20; -fx-border-radius: 5" alignment="CENTER" spacing="10">
+            <Label text="Total Reservations" style="-fx-font-size: 16"/>
+            <Label fx:id="totalReservationsLabel" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+        </VBox>
+
+        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-border-color: #cccccc; -fx-padding: 20; -fx-border-radius: 5" alignment="CENTER" spacing="10">
+            <Label text="Total Revenue" style="-fx-font-size: 16"/>
+            <Label fx:id="totalRevenueLabel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: green"/>
+        </VBox>
+
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-border-color: #cccccc; -fx-padding: 20; -fx-border-radius: 5" alignment="CENTER" spacing="10">
+            <Label text="Available Vehicles" style="-fx-font-size: 16"/>
+            <Label fx:id="availableVehiclesLabel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue"/>
+        </VBox>
+
+        <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-border-color: #cccccc; -fx-padding: 20; -fx-border-radius: 5" alignment="CENTER" spacing="10">
+            <Label text="Most Rented Vehicle" style="-fx-font-size: 16"/>
+            <Label fx:id="mostRentedLabel" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+        </VBox>
+    </GridPane>
+</VBox>
+

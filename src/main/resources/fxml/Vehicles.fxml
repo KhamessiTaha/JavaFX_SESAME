@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.VehiclesController" spacing="10" style="-fx-padding: 10">
+    <Label text="Vehicle Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="marqueField" promptText="Marque" prefWidth="100"/>
+        <TextField fx:id="modeleField" promptText="Modele" prefWidth="100"/>
+        <TextField fx:id="immatriculationField" promptText="Immatriculation" prefWidth="130"/>
+        <TextField fx:id="categorieField" promptText="Categorie" prefWidth="100"/>
+        <TextField fx:id="carburantField" promptText="Carburant" prefWidth="80"/>
+        <TextField fx:id="boiteVitesseField" promptText="BoiteVitesse" prefWidth="90"/>
+        <TextField fx:id="nombrePlacesField" promptText="Places" prefWidth="70"/>
+        <TextField fx:id="prixField" promptText="Prix/Day" prefWidth="80"/>
+        <ComboBox fx:id="statutCombo" prefWidth="100"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddVehicule" style="-fx-padding: 5"/>
+        <Button text="Update" onAction="#handleUpdateVehicule" style="-fx-padding: 5"/>
+        <Button text="Delete" onAction="#handleDeleteVehicule" style="-fx-padding: 5"/>
+        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
+        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
+    </HBox>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+
+    <TableView fx:id="vehiculeTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="marqueCol" text="Marque" prefWidth="80"/>
+            <TableColumn fx:id="modeleCol" text="Modele" prefWidth="80"/>
+            <TableColumn fx:id="immatriculationCol" text="Immatriculation" prefWidth="120"/>
+            <TableColumn fx:id="categorieCol" text="Categorie" prefWidth="80"/>
+            <TableColumn fx:id="carburantCol" text="Carburant" prefWidth="80"/>
+            <TableColumn fx:id="boiteCol" text="BoiteVitesse" prefWidth="90"/>
+            <TableColumn fx:id="placesCol" text="Places" prefWidth="60"/>
+            <TableColumn fx:id="prixCol" text="Prix/Day" prefWidth="80"/>
+            <TableColumn fx:id="statutCol" text="Statut" prefWidth="80"/>
+        </columns>
+    </TableView>
+</VBox>
+

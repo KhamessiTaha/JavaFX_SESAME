@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReturnsController" spacing="10" style="-fx-padding: 10">
+    <Label text="Vehicle Return Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <ComboBox fx:id="reservationCombo" prefWidth="150" promptText="Select Reservation"/>
+        <DatePicker fx:id="dateRetour" promptText="Return Date"/>
+        <ComboBox fx:id="etatVehiculeCombo" prefWidth="150" promptText="Vehicle State"/>
+        <TextField fx:id="fraisSupplementairesField" promptText="Additional Fees" prefWidth="120"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add Return" onAction="#handleAddRetour" style="-fx-padding: 5"/>
+        <Button text="Update Return" onAction="#handleUpdateRetour" style="-fx-padding: 5"/>
+    </HBox>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+
+    <TableView fx:id="retourTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="resIdCol" text="Reservation ID" prefWidth="100"/>
+            <TableColumn fx:id="dateRetourCol" text="Return Date" prefWidth="100"/>
+            <TableColumn fx:id="etatCol" text="Vehicle State" prefWidth="120"/>
+            <TableColumn fx:id="fraisCol" text="Additional Fees" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>
+

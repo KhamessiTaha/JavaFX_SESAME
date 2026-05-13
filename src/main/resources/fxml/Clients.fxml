@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ClientsController" spacing="10" style="-fx-padding: 10">
+    <Label text="Client Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="nomField" promptText="Nom" prefWidth="100"/>
+        <TextField fx:id="prenomField" promptText="Prenom" prefWidth="100"/>
+        <TextField fx:id="cinField" promptText="CIN" prefWidth="100"/>
+        <TextField fx:id="emailField" promptText="Email" prefWidth="150"/>
+        <TextField fx:id="telephoneField" promptText="Telephone" prefWidth="100"/>
+        <TextField fx:id="adresseField" promptText="Adresse" prefWidth="120"/>
+        <TextField fx:id="numeroPermisField" promptText="Numero Permis" prefWidth="120"/>
+        <TextField fx:id="expirationPermisField" promptText="Expiration Permis" prefWidth="150"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddClient" style="-fx-padding: 5"/>
+        <Button text="Update" onAction="#handleUpdateClient" style="-fx-padding: 5"/>
+        <Button text="Delete" onAction="#handleDeleteClient" style="-fx-padding: 5"/>
+        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
+        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
+    </HBox>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+
+    <TableView fx:id="clientTable" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="nomCol" text="Nom" prefWidth="100"/>
+            <TableColumn fx:id="prenomCol" text="Prenom" prefWidth="100"/>
+            <TableColumn fx:id="cinCol" text="CIN" prefWidth="100"/>
+            <TableColumn fx:id="emailCol" text="Email" prefWidth="150"/>
+            <TableColumn fx:id="telephoneCol" text="Telephone" prefWidth="100"/>
+            <TableColumn fx:id="adresseCol" text="Adresse" prefWidth="120"/>
+            <TableColumn fx:id="permisCol" text="Numero Permis" prefWidth="120"/>
+            <TableColumn fx:id="expirationCol" text="Expiration Permis" prefWidth="150"/>
+        </columns>
+    </TableView>
+</VBox>
+
