@@ -60,7 +60,7 @@ A modern, professional JavaFX desktop application for managing car rental operat
 - **Dark/Light Contrast**: Easy on the eyes color combinations
 - **Accessible Forms**: Clear input fields and validation messages
 
-## 🛠 Technology Stack
+##  Technology Stack
 
 - **Language**: Java 17
 - **GUI Framework**: JavaFX 21.0.1
