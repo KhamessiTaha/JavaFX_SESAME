@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.DashboardController" fx:id="mainPane">
-    <top>
-        <MenuBar>
-            <Menu text="File">
-                <MenuItem text="Logout" onAction="#handleLogout"/>
-            </Menu>
-            <Menu text="Management">
-                <MenuItem text="Vehicles" onAction="#handleVehicles"/>
-                <MenuItem text="Clients" onAction="#handleClients"/>
-                <MenuItem text="Reservations" onAction="#handleReservations"/>
-            </Menu>
-            <Menu text="Operations">
-                <MenuItem text="Payments" onAction="#handlePayments"/>
-                <MenuItem text="Returns" onAction="#handleReturns"/>
-            </Menu>
-            <Menu text="Analytics">
-                <MenuItem text="Statistics" onAction="#handleStatistics"/>
-            </Menu>
-        </MenuBar>
-    </top>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.DashboardController" fx:id="mainPane" styleClass="root">
+    <stylesheets>
+        <URL value="@/style/style.css" />
+    </stylesheets>
+
+    <left>
+        <VBox spacing="5" prefWidth="220" styleClass="sidebar">
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+                <Label text="CAR RENTAL" style="-fx-text-fill: white; -fx-font-size: 20; -fx-font-weight: bold"/>
+                <Separator style="-fx-background-color: #34495e;"/>
+                <Label fx:id="userLabel" text="User: Admin" style="-fx-text-fill: #bdc3c7; -fx-font-size: 12;"/>
+                <Label fx:id="roleLabel" text="Role: Administrator" style="-fx-text-fill: #bdc3c7; -fx-font-size: 11; -fx-font-style: italic;"/>
+            </VBox>
+
+            <Separator style="-fx-background-color: #34495e;"/>
+
+            <Button fx:id="btnStatistics" text="Dashboard" onAction="#handleStatistics" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnVehicles" text="Vehicles" onAction="#handleVehicles" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnClients" text="Clients" onAction="#handleClients" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnReservations" text="Reservations" onAction="#handleReservations" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnPayments" text="Payments" onAction="#handlePayments" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnReturns" text="Returns" onAction="#handleReturns" styleClass="sidebar-button" maxWidth="Infinity"/>
+            <Button fx:id="btnUsers" text="User Management" onAction="#handleUserManagement" styleClass="sidebar-button" maxWidth="Infinity"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Separator style="-fx-background-color: #34495e;"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="sidebar-button" maxWidth="Infinity"/>
+        </VBox>
+    </left>
 
     <center>
-        <Label text="Select an option from the menu" style="-fx-font-size: 18"/>
+        <StackPane fx:id="contentArea" style="-fx-padding: 20;">
+            <VBox alignment="CENTER" spacing="20">
+                <Label text="Welcome to Car Rental Management System" styleClass="label-header"/>
+                <Label text="Select a menu item from the sidebar to manage your fleet and rentals." style="-fx-font-size: 14; -fx-text-fill: gray;"/>
+            </VBox>
+        </StackPane>
     </center>
 </BorderPane>
 

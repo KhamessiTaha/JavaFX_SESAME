@@ -68,5 +68,10 @@ public class Reservation {
     public void setVehiculeNom(String val) { vehiculeNom.set(val); }
     public void setOptions(String val) { options.set(val); }
     public void setPrixOptions(double val) { prixOptions.set(val); }
+
+    @Override
+    public String toString() {
+        return "Res #" + getId() + " - " + getClientNom() + " (" + getVehiculeNom() + ")";
+    }
 }
 

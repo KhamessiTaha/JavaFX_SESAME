@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" styleClass="main-content" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.UserManagementController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label styleClass="label-header" text="User &amp; Account Management" />
+
+    <VBox spacing="15" styleClass="card" VBox.vgrow="ALWAYS">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button onAction="#handleActivate" styleClass="button-primary" text="Activate / Accept" />
+            <Button onAction="#handleDeactivate" styleClass="button-secondary" text="Deactivate" />
+            <Button onAction="#handleRefuse" style="-fx-background-color: #F44336; -fx-text-fill: white;" text="Delete / Refuse" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="Manage user access and registration requests" style="-fx-text-fill: gray; -fx-italic: true;"/>
+        </HBox>
+
+        <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idCol" prefWidth="50" text="ID" />
+                <TableColumn fx:id="usernameCol" prefWidth="200" text="Username" />
+                <TableColumn fx:id="roleCol" prefWidth="150" text="Role" />
+                <TableColumn fx:id="statusCol" prefWidth="150" text="Status" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </VBox>
+</VBox>

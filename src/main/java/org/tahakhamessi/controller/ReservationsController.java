@@ -2,18 +2,23 @@ package org.tahakhamessi.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import org.tahakhamessi.dao.ReservationDAO;
 import org.tahakhamessi.dao.ClientDAO;
 import org.tahakhamessi.dao.VehiculeDAO;
 import org.tahakhamessi.model.Reservation;
 import org.tahakhamessi.model.Client;
+import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.model.Vehicule;
 import org.tahakhamessi.util.ValidationUtil;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 public class ReservationsController {
     @FXML private TableView<Reservation> reservationTable;
-    @FXML private TableColumn<Reservation, Number> idCol, clientIdCol, vehiculeIdCol, joursCol;
+    @FXML private TableColumn<Reservation, Number> idCol, joursCol;
     @FXML private TableColumn<Reservation, String> clientNomCol, vehiculeNomCol, dateDebCol, dateFinCol, statutCol;
     @FXML private TableColumn<Reservation, Number> prixCol;
 
@@ -24,11 +29,22 @@ public class ReservationsController {
     @FXML private TextField optionsField, prixOptionsField;
     @FXML private ComboBox<String> statutCombo;
     @FXML private Label errorLabel, successLabel, prixTotalLabel;
+    @FXML private VBox formSection;
+    @FXML private Button btnAdd, btnUpdate, btnDelete;
 
     private ReservationDAO reservationDAO = new ReservationDAO();
     private ClientDAO clientDAO = new ClientDAO();
     private VehiculeDAO vehiculeDAO = new VehiculeDAO();
     private Reservation selectedReservation;
+    private Utilisateur currentUser;
+
+    public void setCurrentUser(Utilisateur user) {
+        this.currentUser = user;
+        if (currentUser != null && "agent".equalsIgnoreCase(currentUser.getRole())) {
+            btnDelete.setVisible(false);
+            btnDelete.setManaged(false);
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -41,8 +57,6 @@ public class ReservationsController {
 
     private void setupTableColumns() {
         idCol.setCellValueFactory(cellData -> cellData.getValue().idProperty());
-        clientIdCol.setCellValueFactory(cellData -> cellData.getValue().clientIdProperty());
-        vehiculeIdCol.setCellValueFactory(cellData -> cellData.getValue().vehiculeIdProperty());
         clientNomCol.setCellValueFactory(cellData -> cellData.getValue().clientNomProperty());
         vehiculeNomCol.setCellValueFactory(cellData -> cellData.getValue().vehiculeNomProperty());
         dateDebCol.setCellValueFactory(cellData -> cellData.getValue().dateDebutProperty());
@@ -98,6 +112,7 @@ public class ReservationsController {
             int days = ValidationUtil.calculateDays(startDate, endDate);
             double prixOptions = prixOptionsField.getText().isEmpty() ? 0 : Double.parseDouble(prixOptionsField.getText());
             double totalPrice = days * v.getPrixParJour() + prixOptions;
+            prixTotalLabel.setText(String.format("Total: %.3f TND", totalPrice));
 
             Reservation r = new Reservation();
             r.setClientId(clientCombo.getValue().getId());
@@ -111,6 +126,10 @@ public class ReservationsController {
             r.setPrixOptions(prixOptions);
 
             reservationDAO.add(r);
+            // Update vehicle status
+            v.setStatut("Louée");
+            vehiculeDAO.update(v);
+
             successLabel.setText("Reservation created successfully");
             clearForm();
             loadReservations();
@@ -141,6 +160,7 @@ public class ReservationsController {
             Vehicule v = vehiculeCombo.getValue();
             double prixOptions = prixOptionsField.getText().isEmpty() ? 0 : Double.parseDouble(prixOptionsField.getText());
             double totalPrice = days * v.getPrixParJour() + prixOptions;
+            prixTotalLabel.setText(String.format("Total: %.3f TND", totalPrice));
 
             selectedReservation.setClientId(clientCombo.getValue().getId());
             selectedReservation.setVehiculeId(v.getId());
@@ -153,6 +173,17 @@ public class ReservationsController {
             selectedReservation.setPrixOptions(prixOptions);
 
             reservationDAO.update(selectedReservation);
+            
+            // Update vehicle status if reservation is confirmed or finished
+            Vehicule vSelected = vehiculeCombo.getValue();
+            if ("Confirmée".equals(selectedReservation.getStatut())) {
+                vSelected.setStatut("Louée");
+                vehiculeDAO.update(vSelected);
+            } else if ("Terminée".equals(selectedReservation.getStatut()) || "Annulée".equals(selectedReservation.getStatut())) {
+                vSelected.setStatut("Disponible");
+                vehiculeDAO.update(vSelected);
+            }
+
             successLabel.setText("Reservation updated successfully");
             clearForm();
             loadReservations();
@@ -211,6 +242,9 @@ public class ReservationsController {
         dateFin.setValue(java.time.LocalDate.parse(r.getDateFin()));
         dateDebut.setValue(java.time.LocalDate.parse(r.getDateDebut()));
         statutCombo.setValue(r.getStatut());
+        optionsField.setText(r.getOptions());
+        prixOptionsField.setText(String.valueOf(r.getPrixOptions()));
+        prixTotalLabel.setText(String.format("Total: %.3f TND", r.getPrixTotal()));
     }
 
     private void clearForm() {

@@ -49,8 +49,8 @@ public class ClientDAO {
     public ObservableList<Client> getAll() {
         ObservableList<Client> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM clients";
-        try (Statement stmt = DatabaseManager.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Statement stmt = DatabaseManager.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
                         rs.getString("cin"), rs.getString("email"), rs.getString("telephone"),
@@ -66,11 +66,12 @@ public class ClientDAO {
         String sql = "SELECT * FROM clients WHERE id=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
-                        rs.getString("cin"), rs.getString("email"), rs.getString("telephone"),
-                        rs.getString("adresse"), rs.getString("numeroPermis"), rs.getString("expirationPermis"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
+                            rs.getString("cin"), rs.getString("email"), rs.getString("telephone"),
+                            rs.getString("adresse"), rs.getString("numeroPermis"), rs.getString("expirationPermis"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,8 +84,9 @@ public class ClientDAO {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, cin);
             stmt.setInt(2, excludeId);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next() && rs.getInt(1) > 0;
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,11 +102,12 @@ public class ClientDAO {
             stmt.setString(2, searchTerm);
             stmt.setString(3, searchTerm);
             stmt.setString(4, searchTerm);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                list.add(new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
-                        rs.getString("cin"), rs.getString("email"), rs.getString("telephone"),
-                        rs.getString("adresse"), rs.getString("numeroPermis"), rs.getString("expirationPermis")));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Client(rs.getInt("id"), rs.getString("nom"), rs.getString("prenom"),
+                            rs.getString("cin"), rs.getString("email"), rs.getString("telephone"),
+                            rs.getString("adresse"), rs.getString("numeroPermis"), rs.getString("expirationPermis")));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.AgentDashboardController" spacing="20" style="-fx-padding: 20">
+    <Label text="Agent Operations Overview" styleClass="label-header"/>
+
+    <HBox spacing="20">
+        <!-- Quick Stats -->
+        <VBox styleClass="card" spacing="10" prefWidth="200" alignment="CENTER">
+            <Label text="Vehicles Available" styleClass="label-subheader" style="-fx-font-size: 14;"/>
+            <Label fx:id="availableVehiclesLabel" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
+        </VBox>
+        <VBox styleClass="card" spacing="10" prefWidth="200" alignment="CENTER">
+            <Label text="Today's Pickups" styleClass="label-subheader" style="-fx-font-size: 14;"/>
+            <Label fx:id="todayPickupsLabel" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+        </VBox>
+        <VBox styleClass="card" spacing="10" prefWidth="200" alignment="CENTER">
+            <Label text="Pending Returns" styleClass="label-subheader" style="-fx-font-size: 14;"/>
+            <Label fx:id="pendingReturnsLabel" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #F44336;"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Today's Activity Tables -->
+        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+            <Label text="Upcoming Deliveries (Today)" styleClass="label-subheader"/>
+            <TableView fx:id="pickupsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="pickupClientCol" text="Client" prefWidth="150"/>
+                    <TableColumn fx:id="pickupVehicleCol" text="Vehicle" prefWidth="150"/>
+                    <TableColumn fx:id="pickupStatusCol" text="Status" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+            <Label text="Expected Returns (Today)" styleClass="label-subheader"/>
+            <TableView fx:id="returnsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="returnClientCol" text="Client" prefWidth="150"/>
+                    <TableColumn fx:id="returnVehicleCol" text="Vehicle" prefWidth="150"/>
+                    <TableColumn fx:id="returnStatusCol" text="Status" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>

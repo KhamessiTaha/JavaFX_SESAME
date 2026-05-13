@@ -33,8 +33,8 @@ public class RetourDAO {
     public ObservableList<Retour> getAll() {
         ObservableList<Retour> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM retours";
-        try (Statement stmt = DatabaseManager.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Statement stmt = DatabaseManager.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Retour(rs.getInt("id"), rs.getInt("reservationId"),
                         rs.getString("dateRetour"), rs.getString("etatVehicule"), rs.getDouble("fraisSupplementaires")));
@@ -49,10 +49,11 @@ public class RetourDAO {
         String sql = "SELECT * FROM retours WHERE reservationId=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, reservationId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Retour(rs.getInt("id"), rs.getInt("reservationId"),
-                        rs.getString("dateRetour"), rs.getString("etatVehicule"), rs.getDouble("fraisSupplementaires"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Retour(rs.getInt("id"), rs.getInt("reservationId"),
+                            rs.getString("dateRetour"), rs.getString("etatVehicule"), rs.getDouble("fraisSupplementaires"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

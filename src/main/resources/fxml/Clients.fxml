@@ -2,42 +2,57 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ClientsController" spacing="10" style="-fx-padding: 10">
-    <Label text="Client Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ClientsController" spacing="20" style="-fx-padding: 20">
+    <Label text="Client Management" styleClass="label-header"/>
 
-    <HBox spacing="10">
-        <TextField fx:id="nomField" promptText="Nom" prefWidth="100"/>
-        <TextField fx:id="prenomField" promptText="Prenom" prefWidth="100"/>
-        <TextField fx:id="cinField" promptText="CIN" prefWidth="100"/>
-        <TextField fx:id="emailField" promptText="Email" prefWidth="150"/>
-        <TextField fx:id="telephoneField" promptText="Telephone" prefWidth="100"/>
-        <TextField fx:id="adresseField" promptText="Adresse" prefWidth="120"/>
-        <TextField fx:id="numeroPermisField" promptText="Numero Permis" prefWidth="120"/>
-        <TextField fx:id="expirationPermisField" promptText="Expiration Permis" prefWidth="150"/>
+    <VBox fx:id="formSection" spacing="10" styleClass="card">
+        <Label text="Client Details" styleClass="label-subheader"/>
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+            </columnConstraints>
+
+            <TextField fx:id="nomField" promptText="Last Name" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <TextField fx:id="prenomField" promptText="First Name" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <TextField fx:id="cinField" promptText="CIN / ID" GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
+
+            <TextField fx:id="emailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="telephoneField" promptText="Phone" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="adresseField" promptText="Address" GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+
+            <TextField fx:id="numeroPermisField" promptText="License No" GridPane.columnIndex="0" GridPane.rowIndex="2" maxWidth="Infinity"/>
+            <TextField fx:id="expirationPermisField" promptText="License Expiry" GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button fx:id="btnAdd" text="Add Client" onAction="#handleAddClient" styleClass="button-success"/>
+            <Button fx:id="btnUpdate" text="Update Selected" onAction="#handleUpdateClient" styleClass="button-primary"/>
+            <Button fx:id="btnDelete" text="Delete Selected" onAction="#handleDeleteClient" styleClass="button-danger"/>
+            <Button fx:id="historyButton" text="View History" onAction="#handleViewHistory" styleClass="button-primary"/>
+        </HBox>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search clients..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
     </HBox>
 
-    <HBox spacing="10">
-        <Button text="Add" onAction="#handleAddClient" style="-fx-padding: 5"/>
-        <Button text="Update" onAction="#handleUpdateClient" style="-fx-padding: 5"/>
-        <Button text="Delete" onAction="#handleDeleteClient" style="-fx-padding: 5"/>
-        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
-        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
-    </HBox>
+    <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: #4CAF50;"/>
 
-    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
-    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
-
-    <TableView fx:id="clientTable" prefHeight="400">
+    <TableView fx:id="clientTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
-            <TableColumn fx:id="nomCol" text="Nom" prefWidth="100"/>
-            <TableColumn fx:id="prenomCol" text="Prenom" prefWidth="100"/>
+            <TableColumn fx:id="nomCol" text="Last Name" prefWidth="100"/>
+            <TableColumn fx:id="prenomCol" text="First Name" prefWidth="100"/>
             <TableColumn fx:id="cinCol" text="CIN" prefWidth="100"/>
             <TableColumn fx:id="emailCol" text="Email" prefWidth="150"/>
-            <TableColumn fx:id="telephoneCol" text="Telephone" prefWidth="100"/>
-            <TableColumn fx:id="adresseCol" text="Adresse" prefWidth="120"/>
-            <TableColumn fx:id="permisCol" text="Numero Permis" prefWidth="120"/>
-            <TableColumn fx:id="expirationCol" text="Expiration Permis" prefWidth="150"/>
+            <TableColumn fx:id="telephoneCol" text="Phone" prefWidth="100"/>
+            <TableColumn fx:id="adresseCol" text="Address" prefWidth="120"/>
+            <TableColumn fx:id="permisCol" text="License" prefWidth="120"/>
+            <TableColumn fx:id="expirationCol" text="Expiry" prefWidth="120"/>
         </columns>
     </TableView>
 </VBox>

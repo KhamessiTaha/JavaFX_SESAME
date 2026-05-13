@@ -2,41 +2,58 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReservationsController" spacing="10" style="-fx-padding: 10">
-    <Label text="Reservation Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReservationsController" spacing="20" style="-fx-padding: 20">
+    <Label text="Reservation Management" styleClass="label-header"/>
 
-    <HBox spacing="10">
-        <ComboBox fx:id="clientCombo" prefWidth="150" promptText="Select Client"/>
-        <ComboBox fx:id="vehiculeCombo" prefWidth="150" promptText="Select Vehicle"/>
-        <DatePicker fx:id="dateDebut" promptText="Start Date"/>
-        <DatePicker fx:id="dateFin" promptText="End Date" onAction="#handleCalculateDays"/>
-        <ComboBox fx:id="statutCombo" prefWidth="100"/>
+    <VBox fx:id="formSection" spacing="10" styleClass="card">
+        <Label text="Reservation Details" styleClass="label-subheader"/>
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+            </columnConstraints>
+
+            <ComboBox fx:id="clientCombo" promptText="Select Client" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <ComboBox fx:id="vehiculeCombo" promptText="Select Vehicle" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <DatePicker fx:id="dateDebut" promptText="Start Date" GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <DatePicker fx:id="dateFin" promptText="End Date" onAction="#handleCalculateDays" GridPane.columnIndex="3" GridPane.rowIndex="0" maxWidth="Infinity"/>
+
+            <TextField fx:id="optionsField" promptText="Options (e.g. GPS)" GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="prixOptionsField" promptText="Options Price (TND)" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <ComboBox fx:id="statutCombo" promptText="Status" GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+        </GridPane>
+
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <HBox spacing="10">
+                <Button fx:id="btnAdd" text="Add Reservation" onAction="#handleAddReservation" styleClass="button-success"/>
+                <Button fx:id="btnUpdate" text="Update Selected" onAction="#handleUpdateReservation" styleClass="button-primary"/>
+                <Button fx:id="btnDelete" text="Delete Selected" onAction="#handleDeleteReservation" styleClass="button-danger"/>
+            </HBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="prixTotalLabel" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+        </HBox>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search reservations..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
     </HBox>
 
-    <HBox spacing="10">
-        <Button text="Add" onAction="#handleAddReservation" style="-fx-padding: 5"/>
-        <Button text="Update" onAction="#handleUpdateReservation" style="-fx-padding: 5"/>
-        <Button text="Delete" onAction="#handleDeleteReservation" style="-fx-padding: 5"/>
-        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
-        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
-        <Label fx:id="prixTotalLabel" style="-fx-font-weight: bold"/>
-    </HBox>
+    <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: #4CAF50;"/>
 
-    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
-    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
-
-    <TableView fx:id="reservationTable" prefHeight="400">
+    <TableView fx:id="reservationTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
-            <TableColumn fx:id="clientIdCol" text="Client ID" prefWidth="60"/>
-            <TableColumn fx:id="vehiculeIdCol" text="Vehicle ID" prefWidth="70"/>
-            <TableColumn fx:id="clientNomCol" text="Client" prefWidth="120"/>
-            <TableColumn fx:id="vehiculeNomCol" text="Vehicle" prefWidth="120"/>
+            <TableColumn fx:id="clientNomCol" text="Client" prefWidth="150"/>
+            <TableColumn fx:id="vehiculeNomCol" text="Vehicle" prefWidth="150"/>
             <TableColumn fx:id="dateDebCol" text="Start Date" prefWidth="100"/>
             <TableColumn fx:id="dateFinCol" text="End Date" prefWidth="100"/>
             <TableColumn fx:id="joursCol" text="Days" prefWidth="50"/>
-            <TableColumn fx:id="prixCol" text="Total Price" prefWidth="80"/>
-            <TableColumn fx:id="statutCol" text="Status" prefWidth="80"/>
+            <TableColumn fx:id="prixCol" text="Total Price (TND)" prefWidth="120"/>
+            <TableColumn fx:id="statutCol" text="Status" prefWidth="100"/>
         </columns>
     </TableView>
 </VBox>

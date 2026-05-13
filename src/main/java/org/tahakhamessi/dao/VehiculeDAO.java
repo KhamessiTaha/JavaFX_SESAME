@@ -51,8 +51,8 @@ public class VehiculeDAO {
     public ObservableList<Vehicule> getAll() {
         ObservableList<Vehicule> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM vehicules";
-        try (Statement stmt = DatabaseManager.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Statement stmt = DatabaseManager.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Vehicule(rs.getInt("id"), rs.getString("marque"), rs.getString("modele"),
                         rs.getString("immatriculation"), rs.getString("categorie"), rs.getString("carburant"),
@@ -69,12 +69,13 @@ public class VehiculeDAO {
         String sql = "SELECT * FROM vehicules WHERE id=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Vehicule(rs.getInt("id"), rs.getString("marque"), rs.getString("modele"),
-                        rs.getString("immatriculation"), rs.getString("categorie"), rs.getString("carburant"),
-                        rs.getString("boiteVitesse"), rs.getInt("nombrePlaces"), rs.getDouble("prixParJour"),
-                        rs.getString("statut"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Vehicule(rs.getInt("id"), rs.getString("marque"), rs.getString("modele"),
+                            rs.getString("immatriculation"), rs.getString("categorie"), rs.getString("carburant"),
+                            rs.getString("boiteVitesse"), rs.getInt("nombrePlaces"), rs.getDouble("prixParJour"),
+                            rs.getString("statut"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,8 +88,9 @@ public class VehiculeDAO {
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setString(1, immatriculation);
             stmt.setInt(2, excludeId);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next() && rs.getInt(1) > 0;
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,12 +116,13 @@ public class VehiculeDAO {
             stmt.setString(4, "%" + query + "%");
             stmt.setString(5, filter);
             stmt.setString(6, filter);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                list.add(new Vehicule(rs.getInt("id"), rs.getString("marque"), rs.getString("modele"),
-                        rs.getString("immatriculation"), rs.getString("categorie"), rs.getString("carburant"),
-                        rs.getString("boiteVitesse"), rs.getInt("nombrePlaces"), rs.getDouble("prixParJour"),
-                        rs.getString("statut")));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Vehicule(rs.getInt("id"), rs.getString("marque"), rs.getString("modele"),
+                            rs.getString("immatriculation"), rs.getString("categorie"), rs.getString("carburant"),
+                            rs.getString("boiteVitesse"), rs.getInt("nombrePlaces"), rs.getDouble("prixParJour"),
+                            rs.getString("statut")));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

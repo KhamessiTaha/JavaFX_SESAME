@@ -57,5 +57,10 @@ public class Client {
     public void setAdresse(String val) { adresse.set(val); }
     public void setNumeroPermis(String val) { numeroPermis.set(val); }
     public void setExpirationPermis(String val) { expirationPermis.set(val); }
+
+    @Override
+    public String toString() {
+        return getNom() + " " + getPrenom() + " (" + getCin() + ")";
+    }
 }
 

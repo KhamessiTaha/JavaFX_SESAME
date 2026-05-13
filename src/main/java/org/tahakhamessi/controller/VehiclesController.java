@@ -2,8 +2,10 @@ package org.tahakhamessi.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import org.tahakhamessi.dao.VehiculeDAO;
+import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.model.Vehicule;
 import org.tahakhamessi.util.ValidationUtil;
 
@@ -18,9 +20,20 @@ public class VehiclesController {
     @FXML private ComboBox<String> statutCombo;
     @FXML private ComboBox<String> filterCombo;
     @FXML private Label errorLabel, successLabel;
+    @FXML private VBox formSection;
+    @FXML private Button btnAdd, btnUpdate, btnDelete;
 
     private VehiculeDAO vehiculeDAO = new VehiculeDAO();
     private Vehicule selectedVehicule;
+    private Utilisateur currentUser;
+
+    public void setCurrentUser(Utilisateur user) {
+        this.currentUser = user;
+        if (currentUser != null && "agent".equalsIgnoreCase(currentUser.getRole())) {
+            formSection.setVisible(false);
+            formSection.setManaged(false);
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -62,6 +75,10 @@ public class VehiclesController {
         if (ValidationUtil.isRequiredFieldEmpty(marqueField.getText()) ||
             ValidationUtil.isRequiredFieldEmpty(modeleField.getText()) ||
             ValidationUtil.isRequiredFieldEmpty(immatriculationField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(categorieField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(carburantField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(boiteVitesseField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(nombrePlacesField.getText()) ||
             ValidationUtil.isRequiredFieldEmpty(prixField.getText())) {
             errorLabel.setText("All fields are required");
             return;
@@ -119,13 +136,14 @@ public class VehiclesController {
                 return;
             }
 
-            selectedVehicule.setMarque(marqueField.getText());
-            selectedVehicule.setModele(modeleField.getText());
             if (!selectedVehicule.getImmatriculation().equals(immatriculationField.getText()) &&
                 vehiculeDAO.immatriculationExists(immatriculationField.getText(), selectedVehicule.getId())) {
                 errorLabel.setText("Immatriculation already exists");
                 return;
             }
+
+            selectedVehicule.setMarque(marqueField.getText());
+            selectedVehicule.setModele(modeleField.getText());
             selectedVehicule.setImmatriculation(immatriculationField.getText());
             selectedVehicule.setCategorie(categorieField.getText());
             selectedVehicule.setCarburant(carburantField.getText());

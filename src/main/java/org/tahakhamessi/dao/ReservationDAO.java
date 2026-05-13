@@ -53,8 +53,8 @@ public class ReservationDAO {
         String sql = "SELECT r.*, c.nom, c.prenom, v.marque, v.modele FROM reservations r "
                 + "LEFT JOIN clients c ON r.clientId = c.id "
                 + "LEFT JOIN vehicules v ON r.vehiculeId = v.id";
-        try (Statement stmt = DatabaseManager.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Statement stmt = DatabaseManager.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Reservation res = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
                         rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
@@ -75,14 +75,15 @@ public class ReservationDAO {
                 + "LEFT JOIN vehicules v ON r.vehiculeId = v.id WHERE r.id=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Reservation res = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
-                        rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
-                        rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
-                res.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
-                res.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
-                return res;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Reservation res = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
+                            rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
+                            rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
+                    res.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
+                    res.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
+                    return res;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,18 +101,15 @@ public class ReservationDAO {
     }
 
     public boolean hasOverlappingReservation(int vehiculeId, String dateDebut, String dateFin, int excludeId) {
-        String sql = "SELECT COUNT(*) FROM reservations WHERE vehiculeId=? AND statut!='Annulée' AND ((dateDebut<=? AND dateFin>=?) OR (dateDebut<=? AND dateFin>=?) OR (dateDebut>=? AND dateFin<=?)) AND id!=?";
+        String sql = "SELECT COUNT(*) FROM reservations WHERE vehiculeId=? AND statut!='Annulée' AND NOT (dateFin < ? OR dateDebut > ?) AND id!=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, vehiculeId);
-            stmt.setString(2, dateFin);
-            stmt.setString(3, dateDebut);
-            stmt.setString(4, dateFin);
-            stmt.setString(5, dateDebut);
-            stmt.setString(6, dateDebut);
-            stmt.setString(7, dateFin);
-            stmt.setInt(8, excludeId);
-            ResultSet rs = stmt.executeQuery();
-            return rs.next() && rs.getInt(1) > 0;
+            stmt.setString(2, dateDebut);
+            stmt.setString(3, dateFin);
+            stmt.setInt(4, excludeId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,14 +127,15 @@ public class ReservationDAO {
             stmt.setString(1, searchTerm);
             stmt.setString(2, searchTerm);
             stmt.setString(3, searchTerm);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Reservation res = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
-                        rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
-                        rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
-                res.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
-                res.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
-                list.add(res);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Reservation res = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
+                            rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
+                            rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
+                    res.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
+                    res.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
+                    list.add(res);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,14 +150,15 @@ public class ReservationDAO {
                 + "LEFT JOIN vehicules v ON r.vehiculeId = v.id WHERE r.clientId = ?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, clientId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Reservation r = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
-                        rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
-                        rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
-                r.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
-                r.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
-                list.add(r);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Reservation r = new Reservation(rs.getInt("id"), rs.getInt("clientId"),
+                            rs.getInt("vehiculeId"), rs.getString("dateDebut"), rs.getString("dateFin"),
+                            rs.getInt("nombreJours"), rs.getDouble("prixTotal"), rs.getString("statut"));
+                    r.setClientNom(rs.getString("nom") + " " + rs.getString("prenom"));
+                    r.setVehiculeNom(rs.getString("marque") + " " + rs.getString("modele"));
+                    list.add(r);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

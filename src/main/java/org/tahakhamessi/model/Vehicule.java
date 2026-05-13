@@ -62,5 +62,10 @@ public class Vehicule {
     public void setNombrePlaces(int val) { nombrePlaces.set(val); }
     public void setPrixParJour(double val) { prixParJour.set(val); }
     public void setStatut(String val) { statut.set(val); }
+    
+    @Override
+    public String toString() {
+        return getMarque() + " " + getModele() + " (" + getImmatriculation() + ")";
+    }
 }
 

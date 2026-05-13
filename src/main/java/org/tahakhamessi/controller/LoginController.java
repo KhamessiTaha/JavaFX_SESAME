@@ -28,6 +28,10 @@ public class LoginController {
 
         Utilisateur user = userDAO.authenticate(username, password);
         if (user != null) {
+            if (!"ACTIF".equals(user.getStatus())) {
+                errorLabel.setText("Account is " + user.getStatus().toLowerCase().replace("_", " ") + ". Please wait for admin approval.");
+                return;
+            }
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
                 loader.load();
@@ -41,6 +45,18 @@ public class LoginController {
             }
         } else {
             errorLabel.setText("Invalid credentials");
+        }
+    }
+
+    @FXML
+    public void handleRegister() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Register.fxml"));
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 1200, 700));
+            stage.setTitle("Register Account");
+        } catch (Exception e) {
+            errorLabel.setText("Failed to load registration: " + e.getMessage());
         }
     }
 }

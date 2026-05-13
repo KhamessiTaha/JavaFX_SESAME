@@ -2,31 +2,39 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReturnsController" spacing="10" style="-fx-padding: 10">
-    <Label text="Vehicle Return Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.ReturnsController" spacing="20" style="-fx-padding: 20">
+    <Label text="Vehicle Return Management" styleClass="label-header"/>
 
-    <HBox spacing="10">
-        <ComboBox fx:id="reservationCombo" prefWidth="150" promptText="Select Reservation"/>
-        <DatePicker fx:id="dateRetour" promptText="Return Date"/>
-        <ComboBox fx:id="etatVehiculeCombo" prefWidth="150" promptText="Vehicle State"/>
-        <TextField fx:id="fraisSupplementairesField" promptText="Additional Fees" prefWidth="120"/>
-    </HBox>
+    <VBox spacing="10" styleClass="card">
+        <Label text="Return Details" styleClass="label-subheader"/>
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+            </columnConstraints>
 
-    <HBox spacing="10">
-        <Button text="Add Return" onAction="#handleAddRetour" style="-fx-padding: 5"/>
-        <Button text="Update Return" onAction="#handleUpdateRetour" style="-fx-padding: 5"/>
-    </HBox>
+            <ComboBox fx:id="reservationCombo" promptText="Select Reservation" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <DatePicker fx:id="dateRetour" promptText="Return Date" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <ComboBox fx:id="etatVehiculeCombo" promptText="Vehicle State" GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="fraisSupplementairesField" promptText="Fees (TND)" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+        </GridPane>
 
-    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
-    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
+        <HBox spacing="10">
+            <Button text="Process Return" onAction="#handleAddRetour" styleClass="button-success"/>
+            <Button text="Update Selected" onAction="#handleUpdateRetour" styleClass="button-primary"/>
+        </HBox>
+    </VBox>
 
-    <TableView fx:id="retourTable" prefHeight="400">
+    <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: #4CAF50;"/>
+
+    <TableView fx:id="retourTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
-            <TableColumn fx:id="resIdCol" text="Reservation ID" prefWidth="100"/>
-            <TableColumn fx:id="dateRetourCol" text="Return Date" prefWidth="100"/>
-            <TableColumn fx:id="etatCol" text="Vehicle State" prefWidth="120"/>
-            <TableColumn fx:id="fraisCol" text="Additional Fees" prefWidth="100"/>
+            <TableColumn fx:id="resIdCol" text="Res ID" prefWidth="80"/>
+            <TableColumn fx:id="dateRetourCol" text="Return Date" prefWidth="120"/>
+            <TableColumn fx:id="etatCol" text="Vehicle Condition" prefWidth="150"/>
+            <TableColumn fx:id="fraisCol" text="Fees (TND)" prefWidth="100"/>
         </columns>
     </TableView>
 </VBox>

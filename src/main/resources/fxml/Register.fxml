@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.RegisterController" alignment="CENTER" spacing="25" styleClass="root">
+    <stylesheets>
+        <URL value="@/style/style.css" />
+    </stylesheets>
+
+    <VBox alignment="CENTER" spacing="20" styleClass="card" maxWidth="500">
+        <Label text="Account Registration" styleClass="label-header"/>
+        
+        <GridPane hgap="15" vgap="15" alignment="CENTER">
+            <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="usernameField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250" promptText="Choose a username"/>
+
+            <Label text="Role:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="roleCombo" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250"/>
+
+            <Label text="Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="passwordField" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="250" promptText="Choose a password"/>
+
+            <Label text="Confirm Password:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="confirmPasswordField" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="250" promptText="Confirm your password"/>
+        </GridPane>
+
+        <Label fx:id="statusLabel" wrapText="true" textAlignment="CENTER" maxWidth="400"/>
+
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="Register Request" onAction="#handleRegister" styleClass="button-primary" prefWidth="250"/>
+            <Button text="Back to Login" onAction="#handleBackToLogin" styleClass="button-secondary" prefWidth="250"/>
+        </VBox>
+    </VBox>
+</VBox>

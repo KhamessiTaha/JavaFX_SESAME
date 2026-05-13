@@ -2,11 +2,13 @@ package org.tahakhamessi.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import org.tahakhamessi.dao.ClientDAO;
 import org.tahakhamessi.dao.ReservationDAO;
 import org.tahakhamessi.model.Client;
 import org.tahakhamessi.model.Reservation;
+import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.util.ValidationUtil;
 
 public class ClientsController {
@@ -18,10 +20,21 @@ public class ClientsController {
                              numeroPermisField, expirationPermisField, searchField;
     @FXML private Label errorLabel, successLabel;
     @FXML private Button historyButton;
+    @FXML private VBox formSection;
+    @FXML private Button btnAdd, btnUpdate, btnDelete;
 
     private ClientDAO clientDAO = new ClientDAO();
     private ReservationDAO reservationDAO = new ReservationDAO();
     private Client selectedClient;
+    private Utilisateur currentUser;
+
+    public void setCurrentUser(Utilisateur user) {
+        this.currentUser = user;
+        if (currentUser != null && "agent".equalsIgnoreCase(currentUser.getRole())) {
+            formSection.setVisible(false);
+            formSection.setManaged(false);
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -62,7 +75,11 @@ public class ClientsController {
         if (ValidationUtil.isRequiredFieldEmpty(nomField.getText()) ||
             ValidationUtil.isRequiredFieldEmpty(prenomField.getText()) ||
             ValidationUtil.isRequiredFieldEmpty(cinField.getText()) ||
-            ValidationUtil.isRequiredFieldEmpty(emailField.getText())) {
+            ValidationUtil.isRequiredFieldEmpty(emailField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(telephoneField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(adresseField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(numeroPermisField.getText()) ||
+            ValidationUtil.isRequiredFieldEmpty(expirationPermisField.getText())) {
             errorLabel.setText("All fields are required");
             return;
         }

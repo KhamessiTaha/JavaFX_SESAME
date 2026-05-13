@@ -1,0 +1,347 @@
+/* Global Styles */
+* {
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+.root {
+    -fx-base: #f5f5f5;
+    -fx-background-color: #f5f5f5;
+}
+
+/* Button Styles */
+.button {
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-transition: all 0.3s ease;
+}
+
+.button:default {
+    -fx-border-color: #007bff;
+    -fx-background-color: #007bff;
+}
+
+.button:default:hover {
+    -fx-background-color: #0056b3;
+    -fx-border-color: #0056b3;
+}
+
+.button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Primary Button */
+.button-primary {
+    -fx-background-color: #007bff;
+    -fx-border-color: #007bff;
+    -fx-text-fill: white;
+}
+
+.button-primary:hover {
+    -fx-background-color: #0056b3;
+    -fx-border-color: #0056b3;
+}
+
+/* Success Button */
+.button-success {
+    -fx-background-color: #28a745;
+    -fx-border-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.button-success:hover {
+    -fx-background-color: #218838;
+    -fx-border-color: #218838;
+}
+
+/* Warning Button */
+.button-warning {
+    -fx-background-color: #ffc107;
+    -fx-border-color: #ffc107;
+    -fx-text-fill: #333;
+}
+
+.button-warning:hover {
+    -fx-background-color: #e0a800;
+    -fx-border-color: #e0a800;
+}
+
+/* Danger Button */
+.button-danger {
+    -fx-background-color: #dc3545;
+    -fx-border-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: #c82333;
+    -fx-border-color: #c82333;
+}
+
+/* TextFields */
+.text-field, .password-field {
+    -fx-padding: 8;
+    -fx-font-size: 12;
+    -fx-control-inner-background: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4;
+    -fx-border-width: 1;
+    -fx-text-fill: #333;
+    -fx-font-family: 'Segoe UI', Arial;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2;
+    -fx-control-inner-background: #ffffff;
+}
+
+.text-field:disabled, .password-field:disabled {
+    -fx-control-inner-background: #f0f0f0;
+    -fx-text-fill: #999;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-padding: 8;
+    -fx-font-size: 12;
+    -fx-control-inner-background: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4;
+}
+
+.combo-box:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2;
+}
+
+.combo-box-popup .list-view {
+    -fx-padding: 0;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 8;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #e8f4f8;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+
+/* DatePicker */
+.date-picker {
+    -fx-padding: 8;
+    -fx-control-inner-background: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4;
+}
+
+.date-picker:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4;
+    -fx-padding: 5;
+}
+
+.table-view:focused {
+    -fx-border-color: #007bff;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+    -fx-border-color: #dee2e6;
+    -fx-padding: 10;
+}
+
+.table-view .table-row-cell {
+    -fx-padding: 8;
+    -fx-text-fill: #333;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #f0f7ff;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #cce5ff;
+    -fx-text-fill: #000;
+}
+
+.table-view .table-row-cell:selected:hover {
+    -fx-background-color: #99ccff;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #333;
+    -fx-font-size: 12;
+}
+
+.label-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.label-subtitle {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.label-header {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.label-success {
+    -fx-text-fill: #28a745;
+    -fx-font-weight: bold;
+}
+
+.label-error {
+    -fx-text-fill: #dc3545;
+    -fx-font-weight: bold;
+}
+
+.label-warning {
+    -fx-text-fill: #ffc107;
+    -fx-font-weight: bold;
+}
+
+/* Menu Bar */
+.menu-bar {
+    -fx-background-color: #2c3e50;
+    -fx-border-color: #34495e;
+}
+
+.menu {
+    -fx-text-fill: white;
+    -fx-padding: 10;
+    -fx-font-size: 12;
+}
+
+.menu:hover {
+    -fx-background-color: #34495e;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+}
+
+.menu-item:hover {
+    -fx-background-color: #007bff;
+}
+
+.menu-item:hover .label {
+    -fx-text-fill: white;
+}
+
+/* VBox and HBox */
+.vbox, .hbox {
+    -fx-spacing: 10;
+}
+
+/* Scrollbar */
+.scroll-bar {
+    -fx-base: #e8e8e8;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button,
+.scroll-bar:horizontal .increment-button,
+.scroll-bar:horizontal .decrement-button {
+    -fx-padding: 0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #bbb;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #999;
+}
+
+/* BorderPane */
+.border-pane {
+    -fx-padding: 0;
+    -fx-background-color: #f5f5f5;
+}
+
+/* CardPane */
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Section containers */
+.section-header {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+    -fx-padding: 15;
+}
+
+.section-content {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+/* Alert Dialog */
+.alert {
+    -fx-padding: 20;
+}
+
+.dialog-pane {
+    -fx-padding: 20;
+    -fx-background-color: white;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: white;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 15;
+}
+
+/* Tooltip */
+.tooltip {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-font-size: 11;
+    -fx-padding: 5;
+}
+

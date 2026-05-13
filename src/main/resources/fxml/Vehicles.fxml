@@ -2,44 +2,60 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.VehiclesController" spacing="10" style="-fx-padding: 10">
-    <Label text="Vehicle Management" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.tahakhamessi.controller.VehiclesController" spacing="20" style="-fx-padding: 20">
+    <Label text="Vehicle Management" styleClass="label-header"/>
 
-    <HBox spacing="10">
-        <TextField fx:id="marqueField" promptText="Marque" prefWidth="100"/>
-        <TextField fx:id="modeleField" promptText="Modele" prefWidth="100"/>
-        <TextField fx:id="immatriculationField" promptText="Immatriculation" prefWidth="130"/>
-        <TextField fx:id="categorieField" promptText="Categorie" prefWidth="100"/>
-        <TextField fx:id="carburantField" promptText="Carburant" prefWidth="80"/>
-        <TextField fx:id="boiteVitesseField" promptText="BoiteVitesse" prefWidth="90"/>
-        <TextField fx:id="nombrePlacesField" promptText="Places" prefWidth="70"/>
-        <TextField fx:id="prixField" promptText="Prix/Day" prefWidth="80"/>
-        <ComboBox fx:id="statutCombo" prefWidth="100"/>
+    <VBox fx:id="formSection" spacing="10" styleClass="card">
+        <Label text="Vehicle Details" styleClass="label-subheader"/>
+        <GridPane hgap="15" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100" />
+            </columnConstraints>
+
+            <TextField fx:id="marqueField" promptText="Marque" GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <TextField fx:id="modeleField" promptText="Modele" GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <TextField fx:id="immatriculationField" promptText="Plate Number" GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <TextField fx:id="categorieField" promptText="Category" GridPane.columnIndex="3" GridPane.rowIndex="0" maxWidth="Infinity"/>
+
+            <TextField fx:id="carburantField" promptText="Fuel" GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="boiteVitesseField" promptText="Gearbox" GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="nombrePlacesField" promptText="Seats" GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <TextField fx:id="prixField" promptText="Price/Day (TND)" GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity"/>
+
+            <ComboBox fx:id="statutCombo" promptText="Status" GridPane.columnIndex="0" GridPane.rowIndex="2" maxWidth="Infinity"/>
+        </GridPane>
+
+        <HBox spacing="10">
+            <Button fx:id="btnAdd" text="Add Vehicle" onAction="#handleAddVehicule" styleClass="button-success"/>
+            <Button fx:id="btnUpdate" text="Update Selected" onAction="#handleUpdateVehicule" styleClass="button-primary"/>
+            <Button fx:id="btnDelete" text="Delete Selected" onAction="#handleDeleteVehicule" styleClass="button-danger"/>
+        </HBox>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search vehicles..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <ComboBox fx:id="filterCombo" prefWidth="150" promptText="Filter by Status"/>
+        <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
     </HBox>
 
-    <HBox spacing="10">
-        <Button text="Add" onAction="#handleAddVehicule" style="-fx-padding: 5"/>
-        <Button text="Update" onAction="#handleUpdateVehicule" style="-fx-padding: 5"/>
-        <Button text="Delete" onAction="#handleDeleteVehicule" style="-fx-padding: 5"/>
-        <TextField fx:id="searchField" promptText="Search..." prefWidth="150"/>
-        <Button text="Search" onAction="#handleSearch" style="-fx-padding: 5"/>
-    </HBox>
+    <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>
+    <Label fx:id="successLabel" style="-fx-text-fill: #4CAF50;"/>
 
-    <Label fx:id="errorLabel" style="-fx-text-fill: red"/>
-    <Label fx:id="successLabel" style="-fx-text-fill: green"/>
-
-    <TableView fx:id="vehiculeTable" prefHeight="400">
+    <TableView fx:id="vehiculeTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idCol" text="ID" prefWidth="40"/>
-            <TableColumn fx:id="marqueCol" text="Marque" prefWidth="80"/>
-            <TableColumn fx:id="modeleCol" text="Modele" prefWidth="80"/>
-            <TableColumn fx:id="immatriculationCol" text="Immatriculation" prefWidth="120"/>
-            <TableColumn fx:id="categorieCol" text="Categorie" prefWidth="80"/>
-            <TableColumn fx:id="carburantCol" text="Carburant" prefWidth="80"/>
-            <TableColumn fx:id="boiteCol" text="BoiteVitesse" prefWidth="90"/>
-            <TableColumn fx:id="placesCol" text="Places" prefWidth="60"/>
-            <TableColumn fx:id="prixCol" text="Prix/Day" prefWidth="80"/>
-            <TableColumn fx:id="statutCol" text="Statut" prefWidth="80"/>
+            <TableColumn fx:id="marqueCol" text="Marque" prefWidth="100"/>
+            <TableColumn fx:id="modeleCol" text="Modele" prefWidth="100"/>
+            <TableColumn fx:id="immatriculationCol" text="Plate" prefWidth="120"/>
+            <TableColumn fx:id="categorieCol" text="Category" prefWidth="100"/>
+            <TableColumn fx:id="carburantCol" text="Fuel" prefWidth="80"/>
+            <TableColumn fx:id="boiteCol" text="Gearbox" prefWidth="100"/>
+            <TableColumn fx:id="placesCol" text="Seats" prefWidth="60"/>
+            <TableColumn fx:id="prixCol" text="Price/Day (TND)" prefWidth="120"/>
+            <TableColumn fx:id="statutCol" text="Status" prefWidth="100"/>
         </columns>
     </TableView>
 </VBox>

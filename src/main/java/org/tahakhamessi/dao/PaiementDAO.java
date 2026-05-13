@@ -37,8 +37,8 @@ public class PaiementDAO {
     public ObservableList<Paiement> getAll() {
         ObservableList<Paiement> list = FXCollections.observableArrayList();
         String sql = "SELECT * FROM paiements";
-        try (Statement stmt = DatabaseManager.getConnection().createStatement()) {
-            ResultSet rs = stmt.executeQuery(sql);
+        try (Statement stmt = DatabaseManager.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Paiement(rs.getInt("id"), rs.getInt("reservationId"),
                         rs.getDouble("montantTotal"), rs.getDouble("montantPaye"),
@@ -54,11 +54,12 @@ public class PaiementDAO {
         String sql = "SELECT * FROM paiements WHERE reservationId=?";
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, reservationId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Paiement(rs.getInt("id"), rs.getInt("reservationId"),
-                        rs.getDouble("montantTotal"), rs.getDouble("montantPaye"),
-                        rs.getDouble("resteAPayer"), rs.getString("modePaiement"), rs.getString("statutPaiement"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Paiement(rs.getInt("id"), rs.getInt("reservationId"),
+                            rs.getDouble("montantTotal"), rs.getDouble("montantPaye"),
+                            rs.getDouble("resteAPayer"), rs.getString("modePaiement"), rs.getString("statutPaiement"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
