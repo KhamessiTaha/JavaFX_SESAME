@@ -8,6 +8,16 @@ import org.tahakhamessi.dao.VehiculeDAO;
 import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.model.Vehicule;
 import org.tahakhamessi.util.ValidationUtil;
+import org.tahakhamessi.util.DocumentGenerator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 public class VehiclesController {
     @FXML private TableView<Vehicule> vehiculeTable;
@@ -187,6 +197,55 @@ public class VehiclesController {
         String query = searchField.getText().toLowerCase();
         String filter = filterCombo.getValue() != null ? filterCombo.getValue() : "Tous";
         vehiculeTable.setItems(vehiculeDAO.getFiltered(query, filter));
+    }
+
+    @FXML
+    public void handleExportVehicles() {
+        try {
+            String fileName = "Vehicles_Inventory_" + LocalDate.now() + ".pdf";
+            String filePath = DocumentGenerator.showSaveDialog(vehiculeTable.getScene().getWindow(), fileName);
+            if (filePath == null) return;
+            
+            PDDocument doc = new PDDocument();
+            PDPage page = new PDPage();
+            doc.addPage(page);
+            
+            try (PDPageContentStream content = new PDPageContentStream(doc, page)) {
+                float yPos = DocumentGenerator.addProfessionalHeader(content, "VEHICLE INVENTORY REPORT");
+                
+                yPos -= 10;
+                String[] headers = {"Brand", "Model", "Plate #", "Category", "Daily Rate", "Status"};
+                float[] widths = {70, 80, 90, 80, 85, 70};
+                
+                DocumentGenerator.drawTableHeader(content, headers, widths, yPos);
+                yPos -= 20;
+                
+                for (Vehicule v : vehiculeTable.getItems()) {
+                    String[] values = {v.getMarque(), v.getModele(), v.getImmatriculation(), v.getCategorie(), 
+                                      String.format("%.2f TND", v.getPrixParJour()), v.getStatut()};
+                    yPos = DocumentGenerator.drawTableRow(content, values, widths, yPos);
+                    if (yPos < 80) break;
+                }
+                
+                DocumentGenerator.addProfessionalFooter(content, "EXP-VEH-" + LocalDate.now());
+            }
+            
+            doc.save(filePath);
+            doc.close();
+            successLabel.setText("Vehicle inventory exported successfully!");
+        } catch (Exception e) {
+            errorLabel.setText("Error exporting: " + e.getMessage());
+        }
+    }
+    
+    private static float addTextToPDF(PDPageContentStream content, String text, int fontSize, boolean bold, float yPosition) throws IOException {
+        PDFont font = new PDType1Font(bold ? Standard14Fonts.FontName.HELVETICA_BOLD : Standard14Fonts.FontName.HELVETICA);
+        content.setFont(font, (float) fontSize);
+        content.beginText();
+        content.newLineAtOffset(30, yPosition);
+        content.showText(text);
+        content.endText();
+        return yPosition - 15;
     }
 
     private void populateForm(Vehicule v) {

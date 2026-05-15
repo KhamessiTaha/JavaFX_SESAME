@@ -39,6 +39,7 @@
         <TextField fx:id="searchField" promptText="Search vehicles..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
         <ComboBox fx:id="filterCombo" prefWidth="150" promptText="Filter by Status"/>
         <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
+        <Button text="Export to PDF" onAction="#handleExportVehicles" styleClass="button-primary"/>
     </HBox>
 
     <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>

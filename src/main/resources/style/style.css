@@ -3,7 +3,7 @@
     -fx-accent: #2196F3;
     -fx-default-button: #2196F3;
     -fx-focus-color: #2196F3;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-family: "Segoe UI", "Tahoma", Arial, sans-serif;
 }
 
 .button {

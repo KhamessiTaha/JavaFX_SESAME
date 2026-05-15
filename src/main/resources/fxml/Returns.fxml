@@ -22,6 +22,7 @@
         <HBox spacing="10">
             <Button text="Process Return" onAction="#handleAddRetour" styleClass="button-success"/>
             <Button text="Update Selected" onAction="#handleUpdateRetour" styleClass="button-primary"/>
+            <Button text="Generate Receipt" onAction="#handleGenerateReturnReceipt" styleClass="button-primary"/>
         </HBox>
     </VBox>
 

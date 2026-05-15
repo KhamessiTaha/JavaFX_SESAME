@@ -12,9 +12,16 @@ import org.tahakhamessi.model.Client;
 import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.model.Vehicule;
 import org.tahakhamessi.util.ValidationUtil;
+import org.tahakhamessi.util.DocumentGenerator;
+import org.tahakhamessi.util.generators.TunisianDocumentBundleGenerator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.io.File;
+import java.io.IOException;
+import java.awt.Desktop;
 
 public class ReservationsController {
     @FXML private TableView<Reservation> reservationTable;
@@ -235,6 +242,201 @@ public class ReservationsController {
             reservationTable.setItems(reservationDAO.search(query));
         }
     }
+
+    @FXML
+    public void handleGenerateContract() {
+        errorLabel.setText("");
+        successLabel.setText("");
+        if (selectedReservation == null) {
+            errorLabel.setText("Veuillez sélectionner une réservation");
+            return;
+        }
+        
+        try {
+            Client client = clientDAO.getById(selectedReservation.getClientId());
+            Vehicule vehicle = vehiculeDAO.getById(selectedReservation.getVehiculeId());
+            
+            if (client == null || vehicle == null) {
+                errorLabel.setText("Erreur: Client ou véhicule non trouvé");
+                return;
+            }
+
+            // Ask user where to save documents
+            javafx.stage.DirectoryChooser dirChooser = new javafx.stage.DirectoryChooser();
+            dirChooser.setTitle("Sélectionnez le dossier de destination pour les documents");
+            dirChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            
+            File selectedDir = dirChooser.showDialog(reservationTable.getScene().getWindow());
+            if (selectedDir == null) {
+                return; // User cancelled
+            }
+
+            // Use new Tunisian document generator with selected directory
+            TunisianDocumentBundleGenerator generator = 
+                new TunisianDocumentBundleGenerator(selectedDir.getAbsolutePath());
+
+            // Generate all 5 documents as a complete bundle
+            var bundle = generator.generateCompleteBundle(
+                client,
+                vehicle,
+                selectedReservation,
+                500.0,                                      // Security deposit (TND)
+                0.50,                                       // Extra km rate (TND/km)
+                120000,                                     // Initial mileage
+                selectedReservation.getPrixTotal() + 500,  // Total paid (rental + deposit)
+                "Espèces",                                  // Payment method
+                ""                                          // No damage report initially
+            );
+
+            if (bundle.isSuccess()) {
+                successLabel.setText("✓ " + bundle.getDocumentCount() + " documents générés avec succès!\n" +
+                    "Location: " + bundle.getOutputDirectory());
+                
+                // Ask user if they want to open the documents folder
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Documents générés");
+                alert.setHeaderText("Succès");
+                alert.setContentText("Les " + bundle.getDocumentCount() + " documents ont été générés.\n\n" +
+                    "Voulez-vous ouvrir le dossier?");
+                
+                var result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        Desktop.getDesktop().open(new File(bundle.getOutputDirectory()));
+                    } catch (IOException e) {
+                        // Folder open not supported on this system
+                    }
+                }
+            } else {
+                errorLabel.setText("Erreur: " + bundle.getMessage());
+            }
+
+        } catch (Exception e) {
+            errorLabel.setText("Erreur lors de la génération: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Generate only the rental contract (individual document)
+     */
+    @FXML
+    public void handleGenerateContractOnly() {
+        if (selectedReservation == null) {
+            errorLabel.setText("Veuillez sélectionner une réservation");
+            return;
+        }
+        
+        try {
+            Client client = clientDAO.getById(selectedReservation.getClientId());
+            Vehicule vehicle = vehiculeDAO.getById(selectedReservation.getVehiculeId());
+            
+            TunisianDocumentBundleGenerator generator = 
+                new TunisianDocumentBundleGenerator(
+                    TunisianDocumentBundleGenerator.getDailyOutputDirectory()
+                );
+
+            String path = generator.generateContract(client, vehicle, selectedReservation, 500.0, 0.50);
+            successLabel.setText("✓ Contrat généré: " + new File(path).getName());
+            errorLabel.setText("");
+        } catch (IOException e) {
+            errorLabel.setText("Erreur: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Generate only the invoice/receipt
+     */
+    @FXML
+    public void handleGenerateReceipt() {
+        if (selectedReservation == null) {
+            errorLabel.setText("Veuillez sélectionner une réservation");
+            return;
+        }
+        
+        try {
+            Client client = clientDAO.getById(selectedReservation.getClientId());
+            Vehicule vehicle = vehiculeDAO.getById(selectedReservation.getVehiculeId());
+            
+            TunisianDocumentBundleGenerator generator = 
+                new TunisianDocumentBundleGenerator(
+                    TunisianDocumentBundleGenerator.getDailyOutputDirectory()
+                );
+
+            String path = generator.generateReceipt(client, vehicle, selectedReservation, 
+                selectedReservation.getPrixTotal(), "Espèces");
+            successLabel.setText("✓ Facture générée: " + new File(path).getName());
+            errorLabel.setText("");
+        } catch (IOException e) {
+            errorLabel.setText("Erreur: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Generate vehicle condition sheet
+     */
+    @FXML
+    public void handleGenerateConditionSheet() {
+        if (selectedReservation == null) {
+            errorLabel.setText("Veuillez sélectionner une réservation");
+            return;
+        }
+        
+        try {
+            Vehicule vehicle = vehiculeDAO.getById(selectedReservation.getVehiculeId());
+            
+            TunisianDocumentBundleGenerator generator = 
+                new TunisianDocumentBundleGenerator(
+                    TunisianDocumentBundleGenerator.getDailyOutputDirectory()
+                );
+
+            String path = generator.generateConditionSheet(vehicle, 120000, "");
+            successLabel.setText("✓ Fiche d'état générée: " + new File(path).getName());
+            errorLabel.setText("");
+        } catch (IOException e) {
+            errorLabel.setText("Erreur: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleExportReservations() {
+        try {
+            String fileName = "Export_Reservations_" + LocalDate.now() + ".pdf";
+            String filePath = DocumentGenerator.showSaveDialog(reservationTable.getScene().getWindow(), fileName);
+            if (filePath == null) return;
+            
+            PDDocument doc = new PDDocument();
+            PDPage page = new PDPage();
+            doc.addPage(page);
+            
+            try (PDPageContentStream content = new PDPageContentStream(doc, page)) {
+                float yPos = DocumentGenerator.addProfessionalHeader(content, "RESERVATIONS LIST");
+                
+                yPos -= 10;
+                String[] headers = {"ID", "Client", "Vehicle", "Period", "Total (TND)"};
+                float[] widths = {40, 120, 110, 130, 90};
+                
+                DocumentGenerator.drawTableHeader(content, headers, widths, yPos);
+                yPos -= 20;
+                
+                for (Reservation r : reservationTable.getItems()) {
+                    String period = r.getDateDebut() + " to " + r.getDateFin();
+                    String[] values = {String.valueOf(r.getId()), r.getClientNom(), r.getVehiculeNom(), period, String.format("%.2f", r.getPrixTotal())};
+                    yPos = DocumentGenerator.drawTableRow(content, values, widths, yPos);
+                    if (yPos < 80) break;
+                }
+                
+                DocumentGenerator.addProfessionalFooter(content, "EXP-RES-" + LocalDate.now());
+            }
+            
+            doc.save(filePath);
+            doc.close();
+            successLabel.setText("Export saved successfully!");
+        } catch (Exception e) {
+            errorLabel.setText("Error exporting: " + e.getMessage());
+        }
+    }
+    
 
     private void populateForm(Reservation r) {
         clientCombo.setValue(clientDAO.getById(r.getClientId()));

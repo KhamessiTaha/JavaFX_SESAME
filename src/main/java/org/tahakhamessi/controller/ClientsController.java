@@ -3,13 +3,22 @@ package org.tahakhamessi.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.collections.FXCollections;
 import org.tahakhamessi.dao.ClientDAO;
 import org.tahakhamessi.dao.ReservationDAO;
 import org.tahakhamessi.model.Client;
 import org.tahakhamessi.model.Reservation;
 import org.tahakhamessi.model.Utilisateur;
 import org.tahakhamessi.util.ValidationUtil;
+import org.tahakhamessi.util.DocumentGenerator;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 public class ClientsController {
     @FXML private TableView<Client> clientTable;
@@ -214,6 +223,54 @@ public class ClientsController {
             alert.setContentText(sb.toString().isEmpty() ? "No reservations found" : sb.toString());
             alert.show();
         }
+    }
+
+    @FXML
+    public void handleExportClients() {
+        try {
+            String fileName = "Clients_List_" + LocalDate.now() + ".pdf";
+            String filePath = DocumentGenerator.showSaveDialog(clientTable.getScene().getWindow(), fileName);
+            if (filePath == null) return;
+            
+            PDDocument doc = new PDDocument();
+            PDPage page = new PDPage();
+            doc.addPage(page);
+            
+            try (PDPageContentStream content = new PDPageContentStream(doc, page)) {
+                float yPos = DocumentGenerator.addProfessionalHeader(content, "CLIENTS LIST REPORT");
+                
+                yPos -= 10;
+                String[] headers = {"Name", "CIN", "Email", "Phone", "License #"};
+                float[] widths = {100, 80, 130, 90, 90};
+                
+                DocumentGenerator.drawTableHeader(content, headers, widths, yPos);
+                yPos -= 20;
+                
+                for (Client c : clientTable.getItems()) {
+                    String[] values = {c.getNom() + " " + c.getPrenom(), c.getCin(), c.getEmail(), c.getTelephone(), c.getNumeroPermis()};
+                    yPos = DocumentGenerator.drawTableRow(content, values, widths, yPos);
+                    if (yPos < 80) break;
+                }
+                
+                DocumentGenerator.addProfessionalFooter(content, "EXP-CLI-" + LocalDate.now());
+            }
+            
+            doc.save(filePath);
+            doc.close();
+            successLabel.setText("Clients list exported successfully!");
+        } catch (Exception e) {
+            errorLabel.setText("Error exporting: " + e.getMessage());
+        }
+    }
+    
+    private static float addTextToPDF(PDPageContentStream content, String text, int fontSize, boolean bold, float yPosition) throws IOException {
+        PDFont font = new PDType1Font(bold ? Standard14Fonts.FontName.HELVETICA_BOLD : Standard14Fonts.FontName.HELVETICA);
+        content.setFont(font, (float) fontSize);
+        content.beginText();
+        content.newLineAtOffset(30, yPosition);
+        content.showText(text);
+        content.endText();
+        return yPosition - 15;
     }
 
     private void populateForm(Client c) {

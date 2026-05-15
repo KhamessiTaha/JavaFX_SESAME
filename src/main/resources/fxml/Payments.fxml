@@ -27,6 +27,7 @@
         <HBox spacing="10">
             <Button text="Add Payment" onAction="#handleAddPaiement" styleClass="button-success"/>
             <Button text="Update Selected" onAction="#handleUpdatePaiement" styleClass="button-primary"/>
+            <Button text="Generate Invoice" onAction="#handleGenerateInvoice" styleClass="button-primary"/>
         </HBox>
     </VBox>
 

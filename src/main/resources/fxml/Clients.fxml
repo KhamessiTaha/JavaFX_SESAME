@@ -37,6 +37,7 @@
     <HBox spacing="10" alignment="CENTER_LEFT">
         <TextField fx:id="searchField" promptText="Search clients..." HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
         <Button text="Search" onAction="#handleSearch" styleClass="button-primary"/>
+        <Button text="Export to PDF" onAction="#handleExportClients" styleClass="button-primary"/>
     </HBox>
 
     <Label fx:id="errorLabel" style="-fx-text-fill: #F44336;"/>
